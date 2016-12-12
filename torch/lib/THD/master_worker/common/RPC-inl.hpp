@@ -57,6 +57,19 @@ inline void _appendData(ByteArray& str, THLongStorage* arg) {
     _appendScalar<long>(str, arg->data[i]);
 }
 
+template<typename T>
+inline void _appendData(ByteArray& str, const std::vector<T>& arg) {
+  int l = arg.size();
+  _appendData(str, l);
+  for (std::size_t i = 0; i < l; i++)
+    __appendData(
+        str,
+        arg[i],
+        is_any_of<T, THDTensorPtrTypes>(),
+        is_any_of<T, THDStoragePtrTypes>()
+    );
+}
+
 inline void _appendData(ByteArray& str, Type type) {
   _appendType(str, type);
 }

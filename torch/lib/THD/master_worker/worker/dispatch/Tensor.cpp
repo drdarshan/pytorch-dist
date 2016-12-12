@@ -224,7 +224,6 @@ static void tensorTranspose(rpc::RPCMessage& raw_message) {
   int dimension1 = unpackInteger(raw_message);
   int dimension2 = unpackInteger(raw_message);
   finalize(raw_message);
-  // This does THTensor_(transpose)(self, NULL, d1, d2)
   tensor->transpose(*src, dimension1, dimension2);
 }
 

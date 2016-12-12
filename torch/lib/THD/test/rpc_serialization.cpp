@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <typeinfo>
+#include <vector>
 
 #include "../base/Type.hpp"
 #include "../master_worker/common/RPC.hpp"
@@ -13,14 +14,16 @@ using namespace thd;
 using namespace thd::rpc;
 
 constexpr ptrdiff_t STORAGE_SIZE = 10;
+constexpr size_t VEC_SIZE = 3;
 
 int main() {
   THLongStorage *storage1 = THLongStorage_newWithSize(STORAGE_SIZE);
   long *data = storage1->data;
   for (long i = 0; i < STORAGE_SIZE; i++)
     data[i] = i;
+  std::vector<long> vec(VEC_SIZE, 7);  // VEC_SIZE sevens
   std::unique_ptr<RPCMessage> msg_ptr =
-    packMessage(1, 1.0f, 100l, -12, LLONG_MAX, storage1);
+    packMessage(1, 1.0f, 100l, -12, LLONG_MAX, storage1, vec);
   auto &msg = *msg_ptr;
 
   uint16_t fid = unpackFunctionId(msg);
@@ -47,6 +50,12 @@ int main() {
   assert(storage2->size == STORAGE_SIZE);
   for (long i = 0; i < STORAGE_SIZE; i++)
     assert(storage2->data[i] == i);
+  
+  int vec_size = unpackInteger(msg);
+  assert(vec_size == VEC_SIZE);
+  for (int i = 0; i < VEC_SIZE; i++)
+    assert(unpackInteger(msg) == 7);
+
   assert(msg.isEmpty());
   try {
     double arg6 = unpackFloat(msg);

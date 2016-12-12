@@ -11,3 +11,9 @@
 
 #include "master_worker/master/generic/THDTensor.cpp"
 #include "TH/THGenerateAllTypes.h"
+
+#include "master_worker/master/generic/THDTensorCopy.cpp"
+#include "TH/THGenerateAllTypes.h"
+
+#include "master_worker/master/generic/THDTensorMath.cpp"
+#include "TH/THGenerateAllTypes.h"

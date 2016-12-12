@@ -651,41 +651,9 @@ void THDTensor_(unfold)(THDTensor *self, THDTensor *src,
   );
 }
 
-THDTensor *THDTensor_(newWithStorage1d)(THDStorage *storage_,
-    ptrdiff_t storageOffset_, long size0_, long stride0_) {
-  THError("newWithStorage1d not supported yet");
-  return nullptr;
-}
-
-THDTensor *THDTensor_(newWithTensor)(THDTensor *tensor) {
-  THError("newWithTensor not supported yet");
-  return nullptr;
-}
-
-
-void THDTensor_(fill)(THDTensor *tensor, real value) {
-  masterCommandChannel->sendMessage(
-    packMessage(
-      Functions::tensorFill,
-      tensor,
-      value
-    ),
-    THDState::s_current_worker
-  );
-}
-
-void THDTensor_(zeros)(THDTensor *tensor, THLongStorage *size) {
-  THDTensor_(resize)(tensor, size, nullptr);
-  THDTensor_(fill)(tensor, 0);
-}
-
-void THDTensor_(ones)(THDTensor *tensor, THLongStorage *size) {
-  THDTensor_(resize)(tensor, size, nullptr);
-  THDTensor_(fill)(tensor, 0);
-}
-
-ptrdiff_t THDTensor_(numel)(THDTensor *self) {
-  return THDTensor_(nElement)(self);
+// TODO implement
+int THDTensor_(isSameSizeAs)(const THDTensor *self, const THDTensor *src) {
+  throw std::runtime_error("isSameSizeAs not implemented yet");
 }
 
 void THDTensor_(gather)(THDTensor *self, THDTensor *src, int dim, THDLongTensor *index) {
@@ -1297,6 +1265,15 @@ void THDTensor_(cminValue)(THDTensor *self, THDTensor *src, real value) {
   );
 }
 
+THDTensor *THDTensor_(newWithStorage1d)(THDStorage *storage_,
+    ptrdiff_t storageOffset_, long size0_, long stride0_) {
+  THError("newWithStorage1d not supported yet");
+  return nullptr;
+}
 
+THDTensor *THDTensor_(newWithTensor)(THDTensor *tensor) {
+  THError("newWithTensor not supported yet");
+  return nullptr;
+}
 
 #endif

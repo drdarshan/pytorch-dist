@@ -21,7 +21,6 @@ std::unordered_map<object_id_type, std::unique_ptr<Storage>> workerStorages;
 using namespace thd;
 
 void THDWorkerMain() {
-  // TODO: initialize worker
   std::unique_ptr<thd::rpc::RPCMessage> command;
   for (;;) {
     command = worker::workerCommandChannel->recvMessage();

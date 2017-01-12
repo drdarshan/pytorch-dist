@@ -1,4 +1,3 @@
-
 static void sendTensor(rpc::RPCMessage& raw_message) {
   Tensor *tensor = unpackRetrieveTensor(raw_message);
   int dst_rank = unpackInteger(raw_message);

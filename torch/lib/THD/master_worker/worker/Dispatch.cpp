@@ -1,6 +1,5 @@
 #include <TH/THStorage.h>
 #include <cstdint>
-#include <unordered_map>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -165,7 +164,7 @@ std::string execute(std::unique_ptr<rpc::RPCMessage> raw_message_ptr) {
       (*iter->second)(raw_message);
     else
       throw std::invalid_argument(std::string("invalid function id: ") + std::to_string(fid));
-    return std::string();
+    return std::string(); // TODO: Return nullptr or something instead of an empty string.
   } catch(std::exception& e) {
     return std::string(e.what());
   }

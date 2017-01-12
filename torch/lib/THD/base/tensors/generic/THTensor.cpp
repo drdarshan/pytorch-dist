@@ -577,6 +577,8 @@ auto THTensor<real>::cminValue(const Tensor& src, scalar_type value) -> THTensor
   return *this;
 }
 
+#undef non_const_cast
+
 template<>
 thd::Type THTensor<real>::type() const {
   return thd::type_traits<real>::type;

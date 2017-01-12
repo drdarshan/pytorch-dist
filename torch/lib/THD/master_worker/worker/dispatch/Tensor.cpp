@@ -1,4 +1,3 @@
-
 static std::unique_ptr<Tensor> createTensor(Type type) {
   if (type == Type::UCHAR)
     return std::unique_ptr<Tensor>(new THTensor<unsigned char>());

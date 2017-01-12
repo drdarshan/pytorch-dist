@@ -78,11 +78,13 @@ THLongStorage *THDTensor_(newStrideOf)(THDTensor *self) {
   return stride;
 }
 
-void THDTensor_(setFlag)(THDTensor *self, const char flag) {
+void THDTensor_(setFlag)(THDTensor *self, char flag)
+{
   self->flag |= flag;
 }
 
-void THDTensor_(clearFlag)(THDTensor *self, const char flag) {
+void THDTensor_(clearFlag)(THDTensor *self, char flag)
+{
   self->flag &= ~flag;
 }
 

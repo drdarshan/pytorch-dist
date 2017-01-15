@@ -589,4 +589,42 @@ std::unique_ptr<Tensor> THTensor<real>::newTensor() const {
   return std::unique_ptr<Tensor>(new THTensor<real>());
 }
 
+// XXX: Mateusz functions (set 1)
+
+template<>
+THTensor<real>::THTensor(long size0_)
+  : tensor(THTensor_(newWithSize1d)(size0_))
+  {};
+
+template<>
+THTensor<real>::THTensor(long size0_, long size1_)
+  : tensor(THTensor_(newWithSize2d)(size0_, size1_))
+  {}
+
+template<>
+THTensor<real>::THTensor(long size0_, long size1_, long size2_)
+  : tensor(THTensor_(newWithSize3d)(size0_, size1_, size2_))
+  {}
+
+template<>
+THTensor<real>::THTensor(long size0_, long size1_, long size2_, long size3_)
+  : tensor(THTensor_(newWithSize4d)(size0_, size1_, size2_, size3_))
+  {}
+
+
+  // virtual THTensor* newWithSize2d(long size0_, long size1_) override;
+  // virtual THTensor* newWithSize3d(long size0_, long size1_, long size2_) override;
+  // virtual THTensor* newWithSize4d(long size0_, long size1_, long size2_, long size3_) override;
+  // virtual THTensor* newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) override;
+  // virtual THTensor* newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) override;
+  // virtual THTensor* newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) override;
+  // virtual THTensor* newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) override;
+  // virtual THTensor* newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) override;
+  // virtual THTensor* newClone() override;
+  // virtual THTensor* newContiguous() override;
+  // virtual THTensor* newSelect(int dimension_, long sliceIndex_) override;
+  // virtual THTensor* newNarrow(int dimension_, long firstIndex_, long size_) override;
+  // virtual THTensor* newTranspose(int dimension1_, int dimension2_) override;
+  // virtual THTensor* newUnfold(int dimension_, long size_, long step_) override;
+
 #endif

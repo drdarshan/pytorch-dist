@@ -44,6 +44,11 @@ public:
   THTensor(tensor_type *wrapped);
   virtual ~THTensor();
 
+  THTensor(long size0_);
+  THTensor(long size0_, long size1_);
+  THTensor(long size0_, long size1_, long size2_);
+  THTensor(long size0_, long size1_, long size2_, long size3_);
+
   virtual THTensor* clone() const override;
   virtual THTensor* clone_shallow() override;
 
@@ -131,6 +136,54 @@ public:
   virtual THTensor& cmin(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cmaxValue(const Tensor& src, scalar_type value) override;
   virtual THTensor& cminValue(const Tensor& src, scalar_type value) override;
+
+  // virtual THTensor& squeeze(const Tensor& src) override;
+  // virtual THTensor& squeeze1d(const Tensor& src, int dimension_) override;
+  // virtual int isContiguous() override;
+  // virtual int isSameSizeAs(const Tensor& src) override;
+  // virtual int isSetTo(const Tensor& src) override;
+  // virtual int isSize(const StorageScalarInterface<long>& dims) override;
+  // virtual ptrdiff_t nElement() override;
+  // virtual void gesv(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) override;
+  // virtual void trtrs(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_, const char *uplo, const char *trans, const char *diag) override;
+  // virtual void gels(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) override;
+  // virtual void syev(const Tensor& re_, const Tensor& rv_, const Tensor& a_, const char *jobz, const char *uplo) override;
+  // virtual void geev(const Tensor& re_, const Tensor& rv_, const Tensor& a_, const char *jobvr) override;
+  // virtual void gesvd(const Tensor& ru_, const Tensor& rs_, const Tensor& rv_, const Tensor& a, const char *jobu) override;
+  // virtual void gesvd2(const Tensor& ru_, const Tensor& rs_, const Tensor& rv_, const Tensor& ra_, const Tensor& a, const char *jobu) override;
+  // virtual void getri(const Tensor& ra_, const Tensor& a) override;
+  // virtual void potrf(const Tensor& ra_, const Tensor& a, const char *uplo) override;
+  // virtual void potrs(const Tensor& rb_, const Tensor& b_, const Tensor& a_,  const char *uplo) override;
+  // virtual void potri(const Tensor& ra_, const Tensor& a, const char *uplo) override;
+  // virtual void qr(const Tensor& rq_, const Tensor& rr_, Tensor *a) override;
+  // virtual void geqrf(const Tensor& ra_, const Tensor& rtau_, const Tensor& a) override;
+  // virtual void orgqr(const Tensor& ra_, const Tensor& a, const Tensor& tau) override;
+  // virtual void ormqr(const Tensor& ra_, const Tensor& a, const Tensor& tau, const Tensor& c, const char *side, const char *trans) override;
+  // virtual THTensor& zero() override;
+  // virtual THTensor* newWithSize2d(long size0_, long size1_) override;
+  // virtual THTensor* newWithSize3d(long size0_, long size1_, long size2_) override;
+  // virtual THTensor* newWithSize4d(long size0_, long size1_, long size2_, long size3_) override;
+  // virtual THTensor* newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) override;
+  // virtual THTensor* newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) override;
+  // virtual THTensor* newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) override;
+  // virtual THTensor* newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) override;
+  // virtual THTensor* newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) override;
+  // virtual THTensor* newClone() override;
+  // virtual THTensor* newContiguous() override;
+  // virtual THTensor* newSelect(int dimension_, long sliceIndex_) override;
+  // virtual THTensor* newNarrow(int dimension_, long firstIndex_, long size_) override;
+  // virtual THTensor* newTranspose(int dimension1_, int dimension2_) override;
+  // virtual THTensor* newUnfold(int dimension_, long size_, long step_) override;
+  // virtual THTensor& pstrf(const Tensor& ra_, const TensorScalarInterface<int>& rpiv_, const Tensor*& a, const char uplo, scalar_type tol) override;
+  // virtual THTensor& fill(const Tensor& r_, scalar_type value) override;
+  // virtual THTensor& maskedFill(const Tensor& tensor, const TensorScalarInterface<unsigned char>& mask, scalar_type value) override;
+  // virtual THTensor<scalar_type> maskedCopy(const TensorScalarInterface<unsigned char>& mask, const Tensor& src) override;
+  // virtual THTensor<scalar_type> maskedSelect(const Tensor& src, const TensorScalarInterface<unsigned char>& mask) override;
+  // virtual void nonzero(const TensorScalarInterface<long>& subscript, const Tensor& tensor) override; // TODO: Is this signature fine?
+  // virtual THTensor<scalar_type> indexSelect(const Tensor& src, int dim, const TensorScalarInterface<long>& index) override;
+  // virtual THTensor<scalar_type> indexCopy(int dim, const TensorScalarInterface<long>& index, const Tensor& src) override;
+  // virtual THTensor<scalar_type> indexAdd(int dim, const TensorScalarInterface<long>& index, const Tensor& src) override;
+  // virtual THTensor<scalar_type> indexFill(int dim, const TensorScalarInterface<long>& index, scalar_type val) override;
 
   virtual thd::Type type() const override;
   virtual std::unique_ptr<Tensor> newTensor() const override;

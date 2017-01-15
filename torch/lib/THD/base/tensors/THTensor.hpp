@@ -150,6 +150,12 @@ public:
   virtual THTensor* newNarrow(int dimension_, long firstIndex_, long size_) const override;
   virtual THTensor* newTranspose(int dimension1_, int dimension2_) const override;
   virtual THTensor* newUnfold(int dimension_, long size_, long step_) const override;
+  virtual THTensor& squeeze(const Tensor& src) override;
+  virtual THTensor& squeeze1d(const Tensor& src, int dimension_) override;
+  virtual bool isSameSizeAs(const Tensor& src) const override;
+  virtual bool isSetTo(const Tensor& src) const override;
+  virtual bool isSize(const THLongStorage& dims) const override;
+  virtual ptrdiff_t nElement() const override;
 
   // virtual THTensor& squeeze(const Tensor& src) override;
   // virtual THTensor& squeeze1d(const Tensor& src, int dimension_) override;

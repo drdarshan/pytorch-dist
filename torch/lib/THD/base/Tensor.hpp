@@ -103,13 +103,13 @@ struct Tensor {
   virtual Tensor* newTranspose(int dimension1_, int dimension2_) const = 0;
   virtual Tensor* newUnfold(int dimension_, long size_, long step_) const = 0;
 
-  // virtual Tensor& squeeze(const Tensor& src) = 0;
-  // virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;
-  // virtual int isContiguous() = 0;
-  // virtual int isSameSizeAs(const Tensor& src) = 0;
-  // virtual int isSetTo(const Tensor& src) = 0;
-  // virtual int isSize(const StorageScalarInterface<long>& dims) = 0;
-  // virtual ptrdiff_t nElement() = 0;
+  virtual Tensor& squeeze(const Tensor& src) = 0;
+  virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;
+  virtual bool isSameSizeAs(const Tensor& src) const = 0;
+  virtual bool isSetTo(const Tensor& src) const = 0;
+  virtual bool isSize(const THLongStorage& dims) const = 0;
+  virtual ptrdiff_t nElement() const = 0;
+
   // virtual void gesv(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) = 0;
   // virtual void trtrs(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_, const char *uplo, const char *trans, const char *diag) = 0;
   // virtual void gels(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) = 0;

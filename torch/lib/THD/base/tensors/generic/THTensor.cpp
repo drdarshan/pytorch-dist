@@ -577,8 +577,6 @@ auto THTensor<real>::cminValue(const Tensor& src, scalar_type value) -> THTensor
   return *this;
 }
 
-#undef non_const_cast
-
 template<>
 thd::Type THTensor<real>::type() const {
   return thd::type_traits<real>::type;
@@ -678,7 +676,6 @@ auto THTensor<real>::newClone() const -> THTensor* {
   return this->clone();
 }
 
-// virtual THTensor* newContiguous() const override;
 template<>
 auto THTensor<real>::newContiguous() const -> THTensor* {
   return new THTensor(THTensor_(newContiguous)(tensor));
@@ -704,4 +701,41 @@ auto THTensor<real>::newUnfold(int dimension_, long size_, long step_) const -> 
   return new THTensor(THTensor_(newUnfold)(tensor, dimension_, size_, step_));
 }
 
+template<>
+auto THTensor<real>::squeeze(const Tensor& src) -> THTensor& {
+  THTensor &src_t = non_const_cast(src);
+  THTensor_(squeeze)(tensor, src_t.tensor);
+  return *this;
+}
+
+template<>
+auto THTensor<real>::squeeze1d(const Tensor& src, int dimension_) -> THTensor& {
+  THTensor &src_t = non_const_cast(src);
+  THTensor_(squeeze1d)(tensor, src_t.tensor, dimension_);
+  return *this;
+}
+
+template<>
+bool THTensor<real>::isSameSizeAs(const Tensor& src) const {
+  THTensor &src_t = non_const_cast(src);
+  return THTensor_(isSameSizeAs)(tensor, src_t.tensor);
+}
+
+template<>
+bool THTensor<real>::isSetTo(const Tensor& src) const {
+  THTensor &src_t = non_const_cast(src);
+  return THTensor_(isSetTo)(tensor, src_t.tensor);
+}
+
+template<>
+bool THTensor<real>::isSize(const THLongStorage& dims) const {
+  return THTensor_(isSize)(tensor, &dims);
+}
+
+template<>
+auto THTensor<real>::nElement() const -> ptrdiff_t {
+  return THTensor_(nElement)(tensor);
+}
+
+#undef non_const_cast
 #endif

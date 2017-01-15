@@ -678,4 +678,30 @@ auto THTensor<real>::newClone() const -> THTensor* {
   return this->clone();
 }
 
+// virtual THTensor* newContiguous() const override;
+template<>
+auto THTensor<real>::newContiguous() const -> THTensor* {
+  return new THTensor(THTensor_(newContiguous)(tensor));
+}
+
+template<>
+auto THTensor<real>::newSelect(int dimension_, long sliceIndex_) const -> THTensor* {
+  return new THTensor(THTensor_(newSelect)(tensor, dimension_, sliceIndex_));
+}
+
+template<>
+auto THTensor<real>::newNarrow(int dimension_, long firstIndex_, long size_) const -> THTensor* {
+  return new THTensor(THTensor_(newNarrow)(tensor, dimension_, firstIndex_, size_));
+}
+
+template<>
+auto THTensor<real>::newTranspose(int dimension1_, int dimension2_) const -> THTensor* {
+  return new THTensor(THTensor_(newTranspose)(tensor, dimension1_, dimension2_));
+}
+
+template<>
+auto THTensor<real>::newUnfold(int dimension_, long size_, long step_) const -> THTensor* {
+  return new THTensor(THTensor_(newUnfold)(tensor, dimension_, size_, step_));
+}
+
 #endif

@@ -97,11 +97,11 @@ struct Tensor {
   // XXX: Mateusz part
 
   virtual Tensor* newClone() const = 0;
-  // virtual TensorScalarInterface* newContiguous() = 0;
-  // virtual TensorScalarInterface* newSelect(int dimension_, long sliceIndex_) = 0;
-  // virtual TensorScalarInterface* newNarrow(int dimension_, long firstIndex_, long size_) = 0;
-  // virtual TensorScalarInterface* newTranspose(int dimension1_, int dimension2_) = 0;
-  // virtual TensorScalarInterface* newUnfold(int dimension_, long size_, long step_) = 0;
+  virtual Tensor* newContiguous() const = 0;
+  virtual Tensor* newSelect(int dimension_, long sliceIndex_) const = 0;
+  virtual Tensor* newNarrow(int dimension_, long firstIndex_, long size_) const = 0;
+  virtual Tensor* newTranspose(int dimension1_, int dimension2_) const = 0;
+  virtual Tensor* newUnfold(int dimension_, long size_, long step_) const = 0;
 
   // virtual Tensor& squeeze(const Tensor& src) = 0;
   // virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;

@@ -145,6 +145,11 @@ public:
   // XXX: Mateusz
 
   virtual THTensor* newClone() const override;
+  virtual THTensor* newContiguous() const override;
+  virtual THTensor* newSelect(int dimension_, long sliceIndex_) const override;
+  virtual THTensor* newNarrow(int dimension_, long firstIndex_, long size_) const override;
+  virtual THTensor* newTranspose(int dimension1_, int dimension2_) const override;
+  virtual THTensor* newUnfold(int dimension_, long size_, long step_) const override;
 
   // virtual THTensor& squeeze(const Tensor& src) override;
   // virtual THTensor& squeeze1d(const Tensor& src, int dimension_) override;

@@ -14,6 +14,9 @@
 
 namespace thd {
 
+// XXX: Forward declaration.
+template<typename real> struct TensorScalarInterface;
+
 struct Tensor {
   using long_range = std::vector<long>;
 
@@ -80,6 +83,44 @@ struct Tensor {
   virtual Tensor& cmax(const Tensor& src1, const Tensor& src2) = 0;
   virtual Tensor& cmin(const Tensor& src1, const Tensor& src2) = 0;
 
+  virtual std::unique_ptr<Tensor> newWithSize2d(long size0_, long size1_) = 0;
+  virtual std::unique_ptr<Tensor> newWithSize3d(long size0_, long size1_, long size2_) = 0;
+  virtual std::unique_ptr<Tensor> newWithSize4d(long size0_, long size1_, long size2_, long size3_) = 0;
+  virtual std::unique_ptr<Tensor> newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) = 0;
+  virtual std::unique_ptr<Tensor> newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) = 0;
+  virtual std::unique_ptr<Tensor> newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) = 0;
+  virtual std::unique_ptr<Tensor> newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) = 0;
+  virtual std::unique_ptr<Tensor> newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) = 0;
+  virtual std::unique_ptr<Tensor> newClone() = 0;
+  virtual std::unique_ptr<Tensor> newContiguous() = 0;
+  virtual std::unique_ptr<Tensor> newSelect(int dimension_, long sliceIndex_) = 0;
+  virtual std::unique_ptr<Tensor> newNarrow(int dimension_, long firstIndex_, long size_) = 0;
+  virtual std::unique_ptr<Tensor> newTranspose(int dimension1_, int dimension2_) = 0;
+  virtual std::unique_ptr<Tensor> newUnfold(int dimension_, long size_, long step_) = 0;
+  virtual Tensor& squeeze(const Tensor& src) = 0;
+  virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;
+  virtual int isContiguous() = 0;
+  virtual int isSameSizeAs(const Tensor& src) = 0;
+  virtual int isSetTo(const Tensor& src) = 0;
+  virtual int isSize(const StorageScalarInterface<long>& dims) = 0;
+  virtual ptrdiff_t nElement() = 0;
+  virtual void gesv(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) = 0;
+  virtual void trtrs(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_, const char *uplo, const char *trans, const char *diag) = 0;
+  virtual void gels(const Tensor& rb_, const Tensor& ra_, const Tensor& b_, const Tensor& a_) = 0;
+  virtual void syev(const Tensor& re_, const Tensor& rv_, const Tensor& a_, const char *jobz, const char *uplo) = 0;
+  virtual void geev(const Tensor& re_, const Tensor& rv_, const Tensor& a_, const char *jobvr) = 0;
+  virtual void gesvd(const Tensor& ru_, const Tensor& rs_, const Tensor& rv_, const Tensor& a, const char *jobu) = 0;
+  virtual void gesvd2(const Tensor& ru_, const Tensor& rs_, const Tensor& rv_, const Tensor& ra_, const Tensor& a, const char *jobu) = 0;
+  virtual void getri(const Tensor& ra_, const Tensor& a) = 0;
+  virtual void potrf(const Tensor& ra_, const Tensor& a, const char *uplo) = 0;
+  virtual void potrs(const Tensor& rb_, const Tensor& b_, const Tensor& a_,  const char *uplo) = 0;
+  virtual void potri(const Tensor& ra_, const Tensor& a, const char *uplo) = 0;
+  virtual void qr(const Tensor& rq_, const Tensor& rr_, Tensor *a) = 0;
+  virtual void geqrf(const Tensor& ra_, const Tensor& rtau_, const Tensor& a) = 0;
+  virtual void orgqr(const Tensor& ra_, const Tensor& a, const Tensor& tau) = 0;
+  virtual void ormqr(const Tensor& ra_, const Tensor& a, const Tensor& tau, const Tensor& c, const char *side, const char *trans) = 0;
+  virtual Tensor& zero() = 0;
+
   virtual thd::Type type() const = 0;
   virtual std::unique_ptr<Tensor> newTensor() const = 0;
 };
@@ -116,58 +157,19 @@ struct TensorScalarInterface : public Tensor {
   virtual TensorScalarInterface& cmaxValue(const Tensor& src, scalar_type value) = 0;
   virtual TensorScalarInterface& cminValue(const Tensor& src, scalar_type value) = 0;
 
-  virtual Tensor *newWithSize1d(long size0_) = 0;
-  virtual Tensor *newWithSize2d(long size0_, long size1_) = 0;
-  virtual Tensor *newWithSize3d(long size0_, long size1_, long size2_) = 0;
-  virtual Tensor *newWithSize4d(long size0_, long size1_, long size2_, long size3_) = 0;
-  virtual Tensor *newWithStorage(Storage *storage_, ptrdiff_t storageOffset_, StorageScalarInterface<long> *size_, StorageScalarInterface<long> *stride_) = 0;
-  virtual Tensor *newWithStorage1d(Storage *storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) = 0;
-  virtual Tensor *newWithStorage2d(Storage *storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) = 0;
-  virtual Tensor *newWithStorage3d(Storage *storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) = 0;
-  virtual Tensor *newWithStorage4d(Storage *storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) = 0;
-  virtual Tensor *newClone(Tensor *self) = 0;
-  virtual Tensor *newContiguous(Tensor *tensor) = 0;
-  virtual Tensor *newSelect(Tensor *tensor, int dimension_, long sliceIndex_) = 0;
-  virtual Tensor *newNarrow(Tensor *tensor, int dimension_, long firstIndex_, long size_) = 0;
-  virtual Tensor *newTranspose(Tensor *tensor, int dimension1_, int dimension2_) = 0;
-  virtual Tensor *newUnfold(Tensor *tensor, int dimension_, long size_, long step_) = 0;
-  virtual void narrow(Tensor *self, Tensor *src, int dimension_, long firstIndex_, long size_) = 0;
-  virtual void select(Tensor *self, Tensor *src, int dimension_, long sliceIndex_) = 0;
-  virtual void transpose(Tensor *self, Tensor *src, int dimension1_, int dimension2_) = 0;
-  virtual void unfold(Tensor *self, Tensor *src, int dimension_, long size_, long step_) = 0;
-  virtual void squeeze(Tensor *self, Tensor *src) = 0;
-  virtual void squeeze1d(Tensor *self, Tensor *src, int dimension_) = 0;
-  virtual int isContiguous(const Tensor *self) = 0;
-  virtual int isSameSizeAs(const Tensor *self, const Tensor *src) = 0;
-  virtual int isSetTo(const Tensor *self, const Tensor *src) = 0;
-  virtual int isSize(const Tensor *self, const StorageScalarInterface<long> *dims) = 0;
-  virtual ptrdiff_t nElement(const Tensor *self) = 0;
-  virtual void gesv(Tensor *rb_, Tensor *ra_, Tensor *b_, Tensor *a_) = 0;
-  virtual void trtrs(Tensor *rb_, Tensor *ra_, Tensor *b_, Tensor *a_, const char *uplo, const char *trans, const char *diag) = 0;
-  virtual void gels(Tensor *rb_, Tensor *ra_, Tensor *b_, Tensor *a_) = 0;
-  virtual void syev(Tensor *re_, Tensor *rv_, Tensor *a_, const char *jobz, const char *uplo) = 0;
-  virtual void geev(Tensor *re_, Tensor *rv_, Tensor *a_, const char *jobvr) = 0;
-  virtual void gesvd(Tensor *ru_, Tensor *rs_, Tensor *rv_, Tensor *a, const char *jobu) = 0;
-  virtual void gesvd2(Tensor *ru_, Tensor *rs_, Tensor *rv_, Tensor *ra_, Tensor *a, const char *jobu) = 0;
-  virtual void getri(Tensor *ra_, Tensor *a) = 0;
-  virtual void potrf(Tensor *ra_, Tensor *a, const char *uplo) = 0;
-  virtual void potrs(Tensor *rb_, Tensor *b_, Tensor *a_,  const char *uplo) = 0;
-  virtual void potri(Tensor *ra_, Tensor *a, const char *uplo) = 0;
-  virtual void qr(Tensor *rq_, Tensor *rr_, Tensor *a) = 0;
-  virtual void geqrf(Tensor *ra_, Tensor *rtau_, Tensor *a) = 0;
-  virtual void orgqr(Tensor *ra_, Tensor *a, Tensor *tau) = 0;
-  virtual void ormqr(Tensor *ra_, Tensor *a, Tensor *tau, Tensor *c, const char *side, const char *trans) = 0;
-  virtual void pstrf(Tensor *ra_, TensorScalarInterface<int> *rpiv_, Tensor* a, const char* uplo, scalar_type tol) = 0;
-  virtual void fill(Tensor *r_, scalar_type value) = 0;
-  virtual void zero(Tensor *r_) = 0;
-  virtual void maskedFill(Tensor *tensor, TensorScalarInterface<unsigned char> *mask, scalar_type value) = 0;
-  virtual void maskedCopy(Tensor *tensor, TensorScalarInterface<unsigned char> *mask, Tensor* src) = 0;
-  virtual void maskedSelect(Tensor *tensor, Tensor* src, TensorScalarInterface<unsigned char> *mask) = 0;
-  virtual void nonzero(TensorScalarInterface<long> *subscript, Tensor *tensor) = 0;
-  virtual void indexSelect(Tensor *tensor, Tensor *src, int dim, TensorScalarInterface<long> *index) = 0;
-  virtual void indexCopy(Tensor *tensor, int dim, TensorScalarInterface<long> *index, Tensor *src) = 0;
-  virtual void indexAdd(Tensor *tensor, int dim, TensorScalarInterface<long> *index, Tensor *src) = 0;
-  virtual void indexFill(Tensor *tensor, int dim, TensorScalarInterface<long> *index, scalar_type val) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithSize1d(long size0_) = 0;
+
+  virtual TensorScalarInterface& pstrf(const Tensor& ra_, const TensorScalarInterface<int>& rpiv_, const Tensor*& a, const char uplo, scalar_type tol) = 0;
+  virtual TensorScalarInterface& fill(const Tensor& r_, scalar_type value) = 0;
+  virtual TensorScalarInterface& maskedFill(const Tensor& tensor, const TensorScalarInterface<unsigned char>& mask, scalar_type value) = 0;
+
+  virtual std::unique_ptr<Tensor> maskedCopy(const TensorScalarInterface<unsigned char>& mask, const Tensor& src) = 0;
+  virtual std::unique_ptr<Tensor> maskedSelect(const Tensor& src, const TensorScalarInterface<unsigned char>& mask) = 0;
+  virtual void nonzero(const TensorScalarInterface<long>& subscript, const Tensor& tensor) = 0; // TODO: Is this signature fine?
+  virtual std::unique_ptr<Tensor> indexSelect(const Tensor& src, int dim, const TensorScalarInterface<long>& index) = 0;
+  virtual std::unique_ptr<Tensor> indexCopy(int dim, const TensorScalarInterface<long>& index, const Tensor& src) = 0;
+  virtual std::unique_ptr<Tensor> indexAdd(int dim, const TensorScalarInterface<long>& index, const Tensor& src) = 0;
+  virtual std::unique_ptr<TensorScalarInterface> indexFill(int dim, const TensorScalarInterface<long>& index, scalar_type val) = 0;
 };
 
 using FloatTensor = TensorScalarInterface<double>;

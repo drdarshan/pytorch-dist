@@ -3,14 +3,14 @@
 #else
 
 template<>
-THTensor<real>::THTensor():
-  tensor(THTensor_(new)())
-  {};
+THTensor<real>::THTensor()
+  : tensor(THTensor_(new)())
+{}
 
 template<>
-THTensor<real>::THTensor(THRealTensor *wrapped):
-  tensor(wrapped)
-  {};
+THTensor<real>::THTensor(THRealTensor *wrapped)
+  : tensor(wrapped)
+{}
 
 template<>
 THTensor<real>::~THTensor() {
@@ -594,32 +594,90 @@ std::unique_ptr<Tensor> THTensor<real>::newTensor() const {
 template<>
 THTensor<real>::THTensor(long size0_)
   : tensor(THTensor_(newWithSize1d)(size0_))
-  {};
+{}
 
 template<>
 THTensor<real>::THTensor(long size0_, long size1_)
   : tensor(THTensor_(newWithSize2d)(size0_, size1_))
-  {}
+{}
 
 template<>
 THTensor<real>::THTensor(long size0_, long size1_, long size2_)
   : tensor(THTensor_(newWithSize3d)(size0_, size1_, size2_))
-  {}
+{}
 
 template<>
 THTensor<real>::THTensor(long size0_, long size1_, long size2_, long size3_)
   : tensor(THTensor_(newWithSize4d)(size0_, size1_, size2_, size3_))
-  {}
+{}
+
+// template<>
+// THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_)
+  // : tensor(THTensor_(newWithStorage)(storage_, storageOffset_, *size_, *stride_))
+  // {}
+template<>
+THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, THLongStorage *size_, THLongStorage *stride_)
+  : tensor(THTensor_(newWithStorage)(
+        (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
+        storageOffset_,
+        size_,
+        stride_)
+    )
+{}
+
+template<>
+THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_)
+  : tensor(THTensor_(newWithStorage1d)(
+        (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
+        storageOffset_,
+        size0_,
+        stride0_)
+    )
+{}
+
+template<>
+THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_)
+  : tensor(THTensor_(newWithStorage2d)(
+        (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
+        storageOffset_,
+        size0_,
+        stride0_,
+        size1_,
+        stride1_)
+    )
+{}
+
+template<>
+THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_)
+  : tensor(THTensor_(newWithStorage3d)(
+        (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
+        storageOffset_,
+        size0_,
+        stride0_,
+        size1_,
+        stride1_,
+        size2_,
+        stride2_)
+    )
+{}
+
+template<>
+THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_)
+  : tensor(THTensor_(newWithStorage4d)(
+        (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
+        storageOffset_,
+        size0_,
+        stride0_,
+        size1_,
+        stride1_,
+        size2_,
+        stride2_,
+        size3_,
+        stride3_)
+    )
+{}
 
 
-  // virtual THTensor* newWithSize2d(long size0_, long size1_) override;
-  // virtual THTensor* newWithSize3d(long size0_, long size1_, long size2_) override;
-  // virtual THTensor* newWithSize4d(long size0_, long size1_, long size2_, long size3_) override;
-  // virtual THTensor* newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) override;
-  // virtual THTensor* newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) override;
-  // virtual THTensor* newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) override;
-  // virtual THTensor* newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) override;
-  // virtual THTensor* newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) override;
   // virtual THTensor* newClone() override;
   // virtual THTensor* newContiguous() override;
   // virtual THTensor* newSelect(int dimension_, long sliceIndex_) override;

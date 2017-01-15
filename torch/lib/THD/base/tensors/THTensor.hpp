@@ -48,6 +48,11 @@ public:
   THTensor(long size0_, long size1_);
   THTensor(long size0_, long size1_, long size2_);
   THTensor(long size0_, long size1_, long size2_, long size3_);
+  THTensor(const Storage& storage_, ptrdiff_t storageOffset_, THLongStorage *size_, THLongStorage *stride_);
+  THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_);
+  THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_);
+  THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_);
+  THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_);
 
   virtual THTensor* clone() const override;
   virtual THTensor* clone_shallow() override;

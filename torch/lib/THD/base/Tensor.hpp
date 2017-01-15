@@ -36,13 +36,6 @@ struct Tensor {
   Tensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_);
   Tensor(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_);
 
-  // virtual TensorScalarInterface* newClone() = 0;
-  // virtual TensorScalarInterface* newContiguous() = 0;
-  // virtual TensorScalarInterface* newSelect(int dimension_, long sliceIndex_) = 0;
-  // virtual TensorScalarInterface* newNarrow(int dimension_, long firstIndex_, long size_) = 0;
-  // virtual TensorScalarInterface* newTranspose(int dimension1_, int dimension2_) = 0;
-  // virtual TensorScalarInterface* newUnfold(int dimension_, long size_, long step_) = 0;
-
   virtual Tensor* clone() const = 0;
   virtual Tensor* clone_shallow() = 0;
 
@@ -101,6 +94,14 @@ struct Tensor {
   virtual Tensor& cmax(const Tensor& src1, const Tensor& src2) = 0;
   virtual Tensor& cmin(const Tensor& src1, const Tensor& src2) = 0;
 
+  // XXX: Mateusz part
+
+  virtual Tensor* newClone() const = 0;
+  // virtual TensorScalarInterface* newContiguous() = 0;
+  // virtual TensorScalarInterface* newSelect(int dimension_, long sliceIndex_) = 0;
+  // virtual TensorScalarInterface* newNarrow(int dimension_, long firstIndex_, long size_) = 0;
+  // virtual TensorScalarInterface* newTranspose(int dimension1_, int dimension2_) = 0;
+  // virtual TensorScalarInterface* newUnfold(int dimension_, long size_, long step_) = 0;
 
   // virtual Tensor& squeeze(const Tensor& src) = 0;
   // virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;

@@ -142,6 +142,10 @@ public:
   virtual THTensor& cmaxValue(const Tensor& src, scalar_type value) override;
   virtual THTensor& cminValue(const Tensor& src, scalar_type value) override;
 
+  // XXX: Mateusz
+
+  virtual THTensor* newClone() const override;
+
   // virtual THTensor& squeeze(const Tensor& src) override;
   // virtual THTensor& squeeze1d(const Tensor& src, int dimension_) override;
   // virtual int isContiguous() override;

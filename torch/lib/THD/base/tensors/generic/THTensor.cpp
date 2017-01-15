@@ -611,18 +611,14 @@ THTensor<real>::THTensor(long size0_, long size1_, long size2_, long size3_)
   : tensor(THTensor_(newWithSize4d)(size0_, size1_, size2_, size3_))
 {}
 
-// template<>
-// THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_)
-  // : tensor(THTensor_(newWithStorage)(storage_, storageOffset_, *size_, *stride_))
-  // {}
 template<>
 THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, THLongStorage *size_, THLongStorage *stride_)
   : tensor(THTensor_(newWithStorage)(
         (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
         storageOffset_,
         size_,
-        stride_)
-    )
+        stride_
+    ))
 {}
 
 template<>
@@ -631,8 +627,8 @@ THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long
         (dynamic_cast<const THStorage<real>&>(storage_)).getRaw(),
         storageOffset_,
         size0_,
-        stride0_)
-    )
+        stride0_
+    ))
 {}
 
 template<>
@@ -643,8 +639,8 @@ THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long
         size0_,
         stride0_,
         size1_,
-        stride1_)
-    )
+        stride1_
+    ))
 {}
 
 template<>
@@ -657,8 +653,8 @@ THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long
         size1_,
         stride1_,
         size2_,
-        stride2_)
-    )
+        stride2_
+    ))
 {}
 
 template<>
@@ -673,16 +669,13 @@ THTensor<real>::THTensor(const Storage& storage_, ptrdiff_t storageOffset_, long
         size2_,
         stride2_,
         size3_,
-        stride3_)
-    )
+        stride3_
+    ))
 {}
 
-
-  // virtual THTensor* newClone() override;
-  // virtual THTensor* newContiguous() override;
-  // virtual THTensor* newSelect(int dimension_, long sliceIndex_) override;
-  // virtual THTensor* newNarrow(int dimension_, long firstIndex_, long size_) override;
-  // virtual THTensor* newTranspose(int dimension1_, int dimension2_) override;
-  // virtual THTensor* newUnfold(int dimension_, long size_, long step_) override;
+template<>
+auto THTensor<real>::newClone() const -> THTensor* {
+  return this->clone();
+}
 
 #endif

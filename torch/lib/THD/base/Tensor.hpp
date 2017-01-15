@@ -83,20 +83,6 @@ struct Tensor {
   virtual Tensor& cmax(const Tensor& src1, const Tensor& src2) = 0;
   virtual Tensor& cmin(const Tensor& src1, const Tensor& src2) = 0;
 
-  virtual std::unique_ptr<Tensor> newWithSize2d(long size0_, long size1_) = 0;
-  virtual std::unique_ptr<Tensor> newWithSize3d(long size0_, long size1_, long size2_) = 0;
-  virtual std::unique_ptr<Tensor> newWithSize4d(long size0_, long size1_, long size2_, long size3_) = 0;
-  virtual std::unique_ptr<Tensor> newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) = 0;
-  virtual std::unique_ptr<Tensor> newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) = 0;
-  virtual std::unique_ptr<Tensor> newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) = 0;
-  virtual std::unique_ptr<Tensor> newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) = 0;
-  virtual std::unique_ptr<Tensor> newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) = 0;
-  virtual std::unique_ptr<Tensor> newClone() = 0;
-  virtual std::unique_ptr<Tensor> newContiguous() = 0;
-  virtual std::unique_ptr<Tensor> newSelect(int dimension_, long sliceIndex_) = 0;
-  virtual std::unique_ptr<Tensor> newNarrow(int dimension_, long firstIndex_, long size_) = 0;
-  virtual std::unique_ptr<Tensor> newTranspose(int dimension1_, int dimension2_) = 0;
-  virtual std::unique_ptr<Tensor> newUnfold(int dimension_, long size_, long step_) = 0;
   virtual Tensor& squeeze(const Tensor& src) = 0;
   virtual Tensor& squeeze1d(const Tensor& src, int dimension_) = 0;
   virtual int isContiguous() = 0;
@@ -158,6 +144,20 @@ struct TensorScalarInterface : public Tensor {
   virtual TensorScalarInterface& cminValue(const Tensor& src, scalar_type value) = 0;
 
   virtual TensorScalarInterface<scalar_type> newWithSize1d(long size0_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithSize2d(long size0_, long size1_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithSize3d(long size0_, long size1_, long size2_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithSize4d(long size0_, long size1_, long size2_, long size3_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithStorage(const Storage& storage_, ptrdiff_t storageOffset_, const StorageScalarInterface<long>& size_, const StorageScalarInterface<long>& stride_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithStorage1d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithStorage2d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithStorage3d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_) = 0;
+  virtual TensorScalarInterface<scalar_type> newWithStorage4d(const Storage& storage_, ptrdiff_t storageOffset_, long size0_, long stride0_, long size1_, long stride1_, long size2_, long stride2_, long size3_, long stride3_) = 0;
+  virtual TensorScalarInterface<scalar_type> newClone() = 0;
+  virtual TensorScalarInterface<scalar_type> newContiguous() = 0;
+  virtual TensorScalarInterface<scalar_type> newSelect(int dimension_, long sliceIndex_) = 0;
+  virtual TensorScalarInterface<scalar_type> newNarrow(int dimension_, long firstIndex_, long size_) = 0;
+  virtual TensorScalarInterface<scalar_type> newTranspose(int dimension1_, int dimension2_) = 0;
+  virtual TensorScalarInterface<scalar_type> newUnfold(int dimension_, long size_, long step_) = 0;
 
   virtual TensorScalarInterface& pstrf(const Tensor& ra_, const TensorScalarInterface<int>& rpiv_, const Tensor*& a, const char uplo, scalar_type tol) = 0;
   virtual TensorScalarInterface& fill(const Tensor& r_, scalar_type value) = 0;

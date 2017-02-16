@@ -17,14 +17,13 @@ void THDTensor_(fill)(THDTensor *tensor, real value) {
   );
 }
 
-// TODO implement
 void THDTensor_(zero)(THDTensor *r) {
-  throw std::runtime_error("fill not implemented yet");
+  THDTensor_(fill)(r, 0);
 }
 
 void THDTensor_(zeros)(THDTensor *tensor, THLongStorage *size) {
   THDTensor_(resize)(tensor, size, nullptr);
-  THDTensor_(fill)(tensor, 0);
+  THDTensor_(zero)(tensor);
 }
 
 void THDTensor_(ones)(THDTensor *tensor, THLongStorage *size) {
@@ -49,9 +48,9 @@ void THDTensor_(diag)(THDTensor *r_, THDTensor *t, int k) {
   } else {
     long sz;
     if (k >= 0)
-      sz = THMin(THDTensor_(size)(t, 0), THDTensor_(size)(t, 1)-k);
+      sz = std::min(THDTensor_(size)(t, 0), THDTensor_(size)(t, 1)-k);
     else
-      sz = THMin(THDTensor_(size)(t, 0)+k, THDTensor_(size)(t, 1));
+      sz = std::min(THDTensor_(size)(t, 0)+k, THDTensor_(size)(t, 1));
     THDTensor_(resize1d)(r_, sz);
   }
   masterCommandChannel->sendMessage(
@@ -67,7 +66,6 @@ void THDTensor_(eye)(THDTensor *r, long n, long m) {
     m = n;
 
   THDTensor_(resize2d)(r, n, m);
-  THDTensor_(zero)(r);
 
   masterCommandChannel->sendMessage(
     packMessage(Functions::tensorEye, r, n, m),
@@ -93,14 +91,6 @@ void THDTensor_(range)(THDTensor *r_, accreal xmin,
     THDState::s_current_worker
   );
 }
-
-// void THDTensor_(randperm)(THDTensor *r_, THDGenerator *_generator, long n) {
-//   throw std::runtime_error("randperm is not available yet");
-//   THArgCheck(n > 0, 1, "must be strictly positive");
-
-//   THDTensor_(resize1d)(r_, n);
-
-// }
 
 void THDTensor_(reshape)(THDTensor *r_, THDTensor *t, THLongStorage *size) {
   THDTensor_(resize)(r_, size, NULL);
@@ -185,7 +175,7 @@ void THDTensor_(catArray)(THDTensor *result, THDTensor **inputs,
   int ldimension = dimension;
   bool allEmpty = true;
   for (int i = 0; i < numInputs; i++)
-    ndim = THMax(ndim, inputs[i]->nDimension);
+    ndim = std::max(ndim, inputs[i]->nDimension);
 
   if (dimension == -2)
     ldimension = ndim ? (ndim - 1) : 0;
@@ -196,14 +186,20 @@ void THDTensor_(catArray)(THDTensor *result, THDTensor **inputs,
   size = THLongStorage_newWithSize(ndim);
 
   for (int i = 0; i < ndim; i++) {
-    long dimSize = i < inputs[0]->nDimension ? inputs[0]->size[i] : 1;
+    long dimSize = i < inputs[0]->nDimension ?
+                   inputs[0]->size[i] :
+                   std::min(inputs[0]->nDimension, 1);
     if (i == ldimension) {
       for (int j = 1; j < numInputs; j++) {
-        dimSize += i < inputs[j]->nDimension ? inputs[j]->size[i] : 1;
+        dimSize += i < inputs[j]->nDimension ?
+                   inputs[j]->size[i] :
+                   std::min(inputs[j]->nDimension, 1);
       }
     } else {
       for (int j = 1; j < numInputs; j++) {
-        long sz = (i < inputs[j]->nDimension ? inputs[j]->size[i] : 1);
+        long sz = i < inputs[j]->nDimension ?
+                  inputs[j]->size[i] :
+                  std::min(inputs[j]->nDimension, 1);
         if (dimSize != sz && dimSize && sz) {
           THLongStorage_free(size);
           THError("inconsistent tensor sizes");
@@ -218,8 +214,7 @@ void THDTensor_(catArray)(THDTensor *result, THDTensor **inputs,
 
   if (!allEmpty) {
     THDTensor_(resize)(result, size, NULL);
-    std::vector<THDTensor*> inputs_vec;
-    inputs_vec.assign(inputs, inputs + numInputs);
+    std::vector<THDTensor*> inputs_vec(inputs, inputs + numInputs);
 
     // There's no need to send numInputs,
     // since sending inputs_vec does this implicitly
@@ -282,7 +277,7 @@ TENSOR_IMPLEMENT_LOGICAL(ne,Ne)
 
 #undef TENSOR_IMPLEMENT_LOGICAL
 
-#define TENSOR_IMPLEMENT_BASIC_FUNCTION(NAME, UPPNAME)           \
+#define TENSOR_IMPLEMENT_POINTWISE_FUNCTION(NAME, UPPNAME)    \
   void THDTensor_(NAME)(THDTensor *r_, THDTensor *t) {        \
     THDTensor_(resizeAs)(r_, t);                              \
     masterCommandChannel->sendMessage(                        \
@@ -293,22 +288,22 @@ TENSOR_IMPLEMENT_LOGICAL(ne,Ne)
 
 #if defined(TH_REAL_IS_LONG) || defined(TH_REAL_IS_INT) ||\
     defined(TH_REAL_IS_DOUBLE) || defined(TH_REAL_IS_FLOAT)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(abs,Abs)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(abs,Abs)
 #endif
 
 #if defined(TH_REAL_IS_DOUBLE) || defined(TH_REAL_IS_FLOAT)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(sigmoid,Sigmoid)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(log,Log)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(log1p,Log1p)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(exp,Exp)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(cos,Cos)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(acos,Acos)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(cosh,Cosh)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(sin,Sin)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(asin,Asin)
-TENSOR_IMPLEMENT_BASIC_FUNCTION(sinh,Sinh)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(sigmoid,Sigmoid)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(log,Log)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(log1p,Log1p)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(exp,Exp)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(cos,Cos)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(acos,Acos)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(cosh,Cosh)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(sin,Sin)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(asin,Asin)
+TENSOR_IMPLEMENT_POINTWISE_FUNCTION(sinh,Sinh)
 #endif
 
-#undef TENSOR_IMPLEMENT_BASIC_FUNCTION
+#undef TENSOR_IMPLEMENT_POINTWISE_FUNCTION
 
 #endif

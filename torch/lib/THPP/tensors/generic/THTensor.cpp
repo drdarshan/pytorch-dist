@@ -248,8 +248,7 @@ auto THTensor<real>::range(scalar_type xmin, scalar_type xmax,
 
 template<>
 auto THTensor<real>::sort(const Tensor& ri, const Tensor& src,
-             int dimension, int desc) -> THTensor& {
-  throw std::runtime_error("sort is not available yet");
+                          int dimension, int desc) -> THTensor& {
   THTensor_(sort)(
     tensor,
     const_long_cast(ri).tensor,
@@ -262,8 +261,7 @@ auto THTensor<real>::sort(const Tensor& ri, const Tensor& src,
 
 template<>
 auto THTensor<real>::topk(const Tensor& ri, const Tensor& src,
-             long k, int dim, int dir, int sorted) -> THTensor& {
-  throw std::runtime_error("topk is not available yet");
+                          long k, int dim, int dir, int sorted) -> THTensor& {
   THTensor_(topk)(
     tensor,
     const_long_cast(ri).tensor,

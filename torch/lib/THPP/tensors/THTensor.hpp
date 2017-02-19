@@ -80,8 +80,8 @@ public:
 
   virtual THTensor& diag(const Tensor& src, int k) override;
   virtual THTensor& eye(long n, long m) override;
-  virtual THTensor& range(scalar_type xmin, scalar_type xmax, scalar_type step) override;
-  // virtual Tensor& randperm() override; TODO
+  virtual THTensor& range(scalar_type xmin, scalar_type xmax,
+                          scalar_type step) override;
   virtual THTensor& sort(const Tensor& ri, const Tensor& src,
                        int dimension, int desc) override;
   virtual THTensor& topk(const Tensor& ri, const Tensor& src,
@@ -136,9 +136,12 @@ public:
   virtual THTensor& eqValueT(const Tensor& t, scalar_type value) override;
   virtual THTensor& fill(scalar_type value) override;
 
-  virtual THTensor& gather(const Tensor& src, int dimension, const Tensor& index) override;
-  virtual THTensor& scatter(int dimension, const Tensor& index, const Tensor& src) override;
-  virtual THTensor& scatterFill(int dimension, const Tensor& index, scalar_type value) override;
+  virtual THTensor& gather(const Tensor& src, int dimension,
+                           const Tensor& index) override;
+  virtual THTensor& scatter(int dimension, const Tensor& index,
+                            const Tensor& src) override;
+  virtual THTensor& scatterFill(int dimension, const Tensor& index,
+                                scalar_type value) override;
   virtual scalar_type dot(const Tensor& source) override;
   virtual scalar_type minall() override;
   virtual scalar_type maxall() override;
@@ -152,35 +155,57 @@ public:
   virtual THTensor& div(const Tensor& src, scalar_type value) override;
   virtual THTensor& fmod(const Tensor& src, scalar_type value) override;
   virtual THTensor& remainder(const Tensor& src, scalar_type value) override;
-  virtual THTensor& clamp(const Tensor& src, scalar_type min_value, scalar_type max_value) override;
+  virtual THTensor& clamp(const Tensor& src, scalar_type min_value,
+                          scalar_type max_value) override;
   virtual THTensor& cadd(const Tensor& src1, const Tensor& src2) override;
-  virtual THTensor& cadd(const Tensor& src1, scalar_type value, const Tensor& src2) override;
-  virtual THTensor& csub(const Tensor& src1, scalar_type value, const Tensor& src2) override;
+  virtual THTensor& cadd(const Tensor& src1, scalar_type value,
+                         const Tensor& src2) override;
+  virtual THTensor& csub(const Tensor& src1, scalar_type value,
+                         const Tensor& src2) override;
   virtual THTensor& cmul(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cpow(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cdiv(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cfmod(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cremainder(const Tensor& src1, const Tensor& src2) override;
-  virtual THTensor& addcmul(const Tensor& src1, scalar_type value, const Tensor& src2, const Tensor& src3) override;
-  virtual THTensor& addcdiv(const Tensor& src1, scalar_type value, const Tensor& src2, const Tensor& src3) override;
-  virtual THTensor& addmv(scalar_type beta, const Tensor& src, scalar_type alpha, const Tensor& mat, const Tensor& vec) override;
-  virtual THTensor& addmm(scalar_type beta, const Tensor& src, scalar_type alpha, const Tensor& mat1, const Tensor& mat2) override;
-  virtual THTensor& addr(scalar_type beta, const Tensor& src, scalar_type alpha, const Tensor& vec1, const Tensor& vec2) override;
-  virtual THTensor& addbmm(scalar_type beta, const Tensor& src, scalar_type alpha, const Tensor& batch1, const Tensor& batch2) override;
-  virtual THTensor& baddbmm(scalar_type beta, const Tensor& src, scalar_type alpha, const Tensor& batch1, const Tensor& batch2) override;
-  virtual THTensor& match(const Tensor& m1, const Tensor& m2, scalar_type gain) override;
-  virtual THTensor& max(const Tensor& indices_, const Tensor& src, int dimension) override;
-  virtual THTensor& min(const Tensor& indices_, const Tensor& src, int dimension) override;
-  virtual THTensor& kthvalue(const Tensor& indices_, const Tensor& src, long k, int dimension) override;
-  virtual THTensor& mode(const Tensor& indices_, const Tensor& src, int dimension) override;
-  virtual THTensor& median(const Tensor& indices_, const Tensor& src, int dimension) override;
+  virtual THTensor& addcmul(const Tensor& src1, scalar_type value,
+                            const Tensor& src2, const Tensor& src3) override;
+  virtual THTensor& addcdiv(const Tensor& src1, scalar_type value,
+                            const Tensor& src2, const Tensor& src3) override;
+  virtual THTensor& addmv(scalar_type beta, const Tensor& src,
+                          scalar_type alpha, const Tensor& mat,
+                          const Tensor& vec) override;
+  virtual THTensor& addmm(scalar_type beta, const Tensor& src,
+                          scalar_type alpha, const Tensor& mat1,
+                          const Tensor& mat2) override;
+  virtual THTensor& addr(scalar_type beta, const Tensor& src,
+                         scalar_type alpha, const Tensor& vec1,
+                         const Tensor& vec2) override;
+  virtual THTensor& addbmm(scalar_type beta, const Tensor& src,
+                           scalar_type alpha, const Tensor& batch1,
+                           const Tensor& batch2) override;
+  virtual THTensor& baddbmm(scalar_type beta, const Tensor& src,
+                            scalar_type alpha, const Tensor& batch1,
+                            const Tensor& batch2) override;
+  virtual THTensor& match(const Tensor& m1, const Tensor& m2,
+                          scalar_type gain) override;
+  virtual THTensor& max(const Tensor& indices_, const Tensor& src,
+                        int dimension) override;
+  virtual THTensor& min(const Tensor& indices_, const Tensor& src,
+                        int dimension) override;
+  virtual THTensor& kthvalue(const Tensor& indices_, const Tensor& src,
+                             long k, int dimension) override;
+  virtual THTensor& mode(const Tensor& indices_, const Tensor& src,
+                         int dimension) override;
+  virtual THTensor& median(const Tensor& indices_, const Tensor& src,
+                           int dimension) override;
   virtual THTensor& sum(const Tensor& src, int dimension) override;
   virtual THTensor& prod(const Tensor& src, int dimension) override;
   virtual THTensor& cumsum(const Tensor& src, int dimension) override;
   virtual THTensor& cumprod(const Tensor& src, int dimension) override;
   virtual THTensor& sign(const Tensor& source) override;
   virtual scalar_type trace() override;
-  virtual THTensor& cross(const Tensor& src1, const Tensor& src2, int dimension) override;
+  virtual THTensor& cross(const Tensor& src1, const Tensor& src2,
+                          int dimension) override;
   virtual THTensor& cmax(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cmin(const Tensor& src1, const Tensor& src2) override;
   virtual THTensor& cmaxValue(const Tensor& src, scalar_type value) override;
